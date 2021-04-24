@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import './App.css';
-import MainPanel from "./components/MainPanel";
+import Router from "./components/Router";
+import BusySpinner from "./components/BusySpinner";
 
 const BusyContext = React.createContext(null);
 export { BusyContext };
@@ -12,8 +13,8 @@ export default function App() {
 
     // Provider "provides" the isBusy state to downStream useContext consumers
     return (
-        <Provider value={{ isBusy, setBusy }}>
-            <MainPanel/>
+        <Provider value={{ isBusy, setBusy, Spinner: BusySpinner }}>
+            <Router />
         </Provider>
     );
 }

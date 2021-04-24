@@ -1,41 +1,44 @@
 import React, { useContext } from 'react';
 import logo from "../logo.svg";
-import BusySpinner from "./BusySpinner";
 import {BusyContext} from "../App";
 
-function MainPanel() {
-    const { isBusy, setBusy } = useContext(BusyContext);
+const FAKE_DELAY_SECONDS = 10;
+const MILLSEC = 1000;
+
+function Home() {
+    const { isBusy, setBusy, Spinner } = useContext(BusyContext);
 
     const handleClick = (event) => {
         event.preventDefault();
 
         setBusy(true);
 
-        const timeoutHandle = setTimeout(() => {
+        setTimeout(() => {
             setBusy(false);
-            clearTimeout(timeoutHandle);
-        }, 1500);
+        }, FAKE_DELAY_SECONDS * MILLSEC);
     };
 
     const content = (
             <>
+                <h1>Home</h1>
                 <img src={logo} className="App-logo" alt="logo"/>
+                <p>{`Click the button to trigger a ${FAKE_DELAY_SECONDS}-second busy spinner`}</p>
+                <p>Navigation to Page A will show a spinner for any unexpired delay.</p>
+                <p>Navigation to Page B will expire any remaining delay.</p>
                 <button type='button' onClick={handleClick}>Cause busy</button>
             </>
         )
     ;
-    const spinner = (<BusySpinner/>);
 
-console.log('isBusy at render ', isBusy);
     return (
             <div className="App">
                 <header className="App-header">
                     { isBusy
-                        ? spinner
+                        ? <Spinner/>
                         : content
                     }
                 </header>
             </div>
     );
 }
-export default MainPanel;
+export default Home;

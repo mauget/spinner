@@ -3,27 +3,58 @@
 This project illustrates using hooks to propagate a busy state
 to downstream components that display a busy spinner based on state.
 
-A React context provider exposes state
+A React context provider in the main component, `App.jsx`, exposes 
+1. busy state
+1. setter for busy state
+1. loading spinner component.
 
-`const [isBusy, setBusy] = useState(false)`
+Any component wishing to present a busy spinner durring a busy network
+operation would consume the context:
 
-via context to consumer components. 
+```javascript
+const {isBusy, setBusy, Spinner} = useContext(BusyContext);
+```
 
-Each consumer would display a 
-Bootstrap loading spinner during a true  context `isBusy`. Any
-conumer may issue `setBusy(false)` to reset busy for all
-context consumers.
++ The consumer would render the passed `<Spinner />` in lieu of its
+content whenever `isBusy` is true 
++ Any comsumer of the context would clear the busy state via the `setBusy(false)` callback
++ Then a conditional render on a false `isBusy` would display normal 
+content instead of the spnnner
 
-## install
+
+## Installation
 
 + `git clone <ssh or http>`
 + `yarn install`  (from project root)
 
 ## Try
 
-From the project root, `yarn state`.
-The default browser opens the application UI.
++ Issue `yarn start` from the project root.
++ The default browser opens the application UI on port 3000.
 
+A crude navigation 
+bar allows swtiching the current page between:
+
++ Home (click a button to set `isBusy`; renders spnnner if `isBusy`; normal content if not)
++ Page A (spnnner if `isBusy`; normal content if not)
++ Page B  (always resets `isBusy`)
+
+A click of a button on the homem page sets `isBusy` to true and then
+issues a `setTimeOut` of 10 seconds tied that sets `isBusy` to false.
+
+Any pages that consume the `useContext` can display the spinner component sent in the context
+whenever the `isBusy` is true. Any consuming page can call `setIsBusy(false)` to reset busy. the 
+spnner will extinguish for any participating page no matter how the render flows to it.
+
+## Screens
+
+### Home
+
+![Home Page](doc/home.png)
+
+### Busy Spinner on Any Page
+
+![busy spinner](doc/busy.png)
 
 ---------------------
 
